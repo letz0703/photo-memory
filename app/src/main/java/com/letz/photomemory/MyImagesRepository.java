@@ -29,7 +29,7 @@ public class MyImagesRepository {
         new DeleteImageAsyncTask(myImagesDAO).execute(myImages);
     }
 
-    public LiveData<List<MyImages>> getImagesList() {
+    public LiveData<List<MyImages>> getAllImages() {
         return imagesList;
     }
 
