@@ -3,6 +3,7 @@ package com.letz.photomemory;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -28,19 +29,23 @@ public class MainActivity extends AppCompatActivity {
         rv = findViewById(R.id.rv);
         fab = findViewById(R.id.fab);
 
+        MyImagesAdapter adapter = new MyImagesAdapter();
+        rv.setAdapter(adapter);
+        // display rv top to bottom
+        rv.setLayoutManager(new LinearLayoutManager(this));
+
         myImagesViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication())
                 .create(MyImagesViewModel.class);
         myImagesViewModel.getAllImages().observe(MainActivity.this, new Observer<List<MyImages>>() {
             @Override
             public void onChanged(List<MyImages> myImages) {
-
+                adapter.setImagesList(myImages);
             }
         });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
             }
         });
