@@ -7,6 +7,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.letz.photomemory"
         minSdkVersion 18
         targetSdkVersion 30
