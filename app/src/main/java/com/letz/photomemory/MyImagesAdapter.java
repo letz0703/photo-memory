@@ -20,8 +20,8 @@ public class MyImagesAdapter extends RecyclerView.Adapter<MyImagesAdapter.myImag
 
     public void setImagesList(List<MyImages> imagesList) {
         this.imagesList = imagesList;
+        notifyDataSetChanged();
     }
-
     @NonNull
     @NotNull
     @Override
