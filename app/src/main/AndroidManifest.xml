@@ -11,6 +11,8 @@
             android:theme="@style/Theme.PhotoMemory">
         <activity android:name=".AddImagesActivity"
                 android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".UpdateImagesActivity"
+                android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
