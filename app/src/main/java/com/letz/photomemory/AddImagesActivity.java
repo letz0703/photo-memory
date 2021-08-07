@@ -1,8 +1,14 @@
 package com.letz.photomemory;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +32,20 @@ public class AddImagesActivity extends AppCompatActivity {
         imageViewAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 사용자가 퍼미션 아직 안 줬으면
+                if (ContextCompat.checkSelfPermission(AddImagesActivity.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions(AddImagesActivity.this
+                            ,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}
+                            ,1);
+                }
+                // 퍼미션 이미 줬으면
+                else
+                {
+                    Intent imageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(imageIntent,2);
+                }
 
             }
         });
