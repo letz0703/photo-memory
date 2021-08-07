@@ -22,6 +22,7 @@ public class MyImagesAdapter extends RecyclerView.Adapter<MyImagesAdapter.myImag
         this.imagesList = imagesList;
         notifyDataSetChanged();
     }
+
     @NonNull
     @NotNull
     @Override
