@@ -1,25 +1,32 @@
 package com.letz.photomemory;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private final String TAG = this.getClass().getSimpleName();
     private RecyclerView rv;
     private FloatingActionButton fab;
 
-
     private MyImagesViewModel myImagesViewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +50,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ActivityResultLauncher<Intent> launcherAR =
+                registerForActivityResult(
+                        new ActivityResultContracts.StartActivityForResult(),
+                        new ActivityResultCallback<ActivityResult>() {
+                            @Override
+                            public void onActivityResult(ActivityResult result) {
+                                if (result.getResultCode() == Activity.RESULT_OK) {
+                                    // Intent data = result.getData();
+                                    Toast.makeText(MainActivity.this, "Main. backed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                );
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                move2AddImagesActivity();
+            }
 
+            private void move2AddImagesActivity() {
+                Intent intent = new Intent(MainActivity.this, AddImagesActivity.class);
+//        startActivityForResult(intent, 1);
+                launcherAR.launch(intent);
             }
         });
+
+
     }
+
+
 }
