@@ -21,7 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
     private final String TAG = this.getClass().getSimpleName();
     private RecyclerView rv;
     private FloatingActionButton fab;
@@ -43,41 +44,28 @@ public class MainActivity extends AppCompatActivity {
 
         myImagesViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication())
                 .create(MyImagesViewModel.class);
-        myImagesViewModel.getAllImages().observe(MainActivity.this, new Observer<List<MyImages>>() {
+        myImagesViewModel.getAllImages().observe(MainActivity.this, new Observer<List<MyImages>>()
+        {
             @Override
             public void onChanged(List<MyImages> myImages) {
                 adapter.setImagesList(myImages);
             }
         });
 
-        ActivityResultLauncher<Intent> launcherAR =
-                registerForActivityResult(
-                        new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult result) {
-                                if (result.getResultCode() == Activity.RESULT_OK) {
-                                    // Intent data = result.getData();
-                                    Toast.makeText(MainActivity.this, "Main. backed", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-                );
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
-                move2AddImagesActivity();
+                move2AddImage();
+
             }
 
-            private void move2AddImagesActivity() {
+            private void move2AddImage() {
                 Intent intent = new Intent(MainActivity.this, AddImagesActivity.class);
-//        startActivityForResult(intent, 1);
-                launcherAR.launch(intent);
+                startActivityForResult(intent, 3);
             }
         });
-
-
     }
 
 

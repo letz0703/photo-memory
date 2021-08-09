@@ -14,8 +14,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,15 +28,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.IOException;
 
 public class AddImagesActivity extends AppCompatActivity
 {
+    private static int RESULT_LOAD_IMAGE = 7;
+
     private ImageView imageViewAddImage;
     private EditText editTextAddImageTitle, editTextAddImageDescription;
     private Button btnSave;
 
-    private Bitmap  selectedImage;
+    private Bitmap selectedImage;
 
 
     @Override
@@ -48,27 +55,31 @@ public class AddImagesActivity extends AppCompatActivity
         editTextAddImageDescription = findViewById(R.id.editTextAddIamgeTitle);
         btnSave = findViewById(R.id.btnSave);
 
-        ActivityResultLauncher<Intent> AddImageLauncher =
-                registerForActivityResult(
-                        new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>()
-                        {
-                            @Override
-                            public void onActivityResult(ActivityResult result)
-                            {
-//                                    if (result.getResultCode() == Activity.RESULT_OK) {
-                                // Intent data = result.getData();
-//                                        Toast.makeText(AddImagesActivity.this, "Main. backed", Toast.LENGTH_SHORT).show();
-//                                    }
-                            }
+        Glide.with(this).load("http://goo.go/gEgYUd").into(imageViewAddImage);
+
+        ActivityResultLauncher<Intent>
+                AddImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>()
+                {
+                    @Override
+                    public void onActivityResult(ActivityResult result)
+                    {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+
+                            Toast.makeText(AddImagesActivity.this, "picture added", Toast.LENGTH_SHORT).show();
+
+
+
                         }
-                );
+
+//                                    }
+                    }
+                }
+        );
         imageViewAddImage.setOnClickListener(new View.OnClickListener()
         {
-
-
             @Override
-
             public void onClick(View v)
             {
                 // 사용자가 퍼미션 아직 안 줬으면
@@ -129,29 +140,29 @@ public class AddImagesActivity extends AppCompatActivity
 //                    startActivityForResult(AddImage,2);
             AddImageLauncher.launch(AddImageIntent);
         }
+
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
-        if (requestCode == 2 && resultCode == RESULT_OK && data != null)
-        {
+        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
             try {
-                if (Build.VERSION.SDK_INT >= 28){
+                if (Build.VERSION.SDK_INT >= 28) {
                     ImageDecoder.Source source
                             = ImageDecoder.createSource(this.getContentResolver(), data.getData());
                     selectedImage = ImageDecoder.decodeBitmap(source);
+                } else {
+                    selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
                 }
-                else
-                {
-                    selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(),data.getData());
-                }
+
+                imageViewAddImage.setImageBitmap(selectedImage);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            imageViewAddImage.setImageBitmap(selectedImage);
 
 
         }
