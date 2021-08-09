@@ -58,15 +58,34 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 move2AddImage();
-
             }
 
             private void move2AddImage() {
                 Intent intent = new Intent(MainActivity.this, AddImagesActivity.class);
-                startActivityForResult(intent, 3);
+//                startActivityForResult(intent, 3);
+                startARLauncher.launch(intent);
             }
         });
     }
 
+    ActivityResultLauncher<Intent> startARLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>()
+            {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+//                    if (result.getResultCode() == Activity.RESULT_OK) {
+//                        Intent data = result.getData();
 
+                    //                        String description = data.getStringExtra("note");
+                    //                        Note note = new Note(description);
+//                        MyImages image = new MyImages(data.getByteExtra("selected"));
+//                        Note note = new Note(data.getStringExtra("note"));
+//                        Add this data to the DB
+//                        noteViewModel.insert(note);
+//                }
+
+                }
+            }
+    );
 }
