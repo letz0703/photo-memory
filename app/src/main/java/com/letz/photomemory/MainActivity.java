@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity
             {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-//                    if (result.getResultCode() == Activity.RESULT_OK) {
-//                        Intent data = result.getData();
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
 
                     //                        String description = data.getStringExtra("note");
                     //                        Note note = new Note(description);
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
 //                        Note note = new Note(data.getStringExtra("note"));
 //                        Add this data to the DB
 //                        noteViewModel.insert(note);
-//                }
+                }
 
                 }
             }
