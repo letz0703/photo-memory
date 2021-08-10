@@ -30,6 +30,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class AddImagesActivity extends AppCompatActivity
@@ -45,8 +47,11 @@ public class AddImagesActivity extends AppCompatActivity
 
     private Bitmap selectedImage;
 
-
     @Override
+    String addedImageTitle = editTextAddImageTitle.getText().toString() ;
+    String addedIageDescription = editTextAddImageDescription.getText().toString();
+    // convert image to byte type
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -61,6 +66,9 @@ public class AddImagesActivity extends AppCompatActivity
 //        Glide.with(this).load("http://goo.go/gEgYUd").into(imageViewAddImage);
 
 
+        String addedImageTitle = editTextAddImageTitle.getText().toString() ;
+        String addedIageDescription = editTextAddImageDescription.getText().toString();
+        // convert image to byte type
 
         imageViewAddImage.setOnClickListener(new View.OnClickListener()
         {
@@ -88,6 +96,12 @@ public class AddImagesActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                String addedImageTitle = editTextAddImageTitle.getText().toString() ;
+                String addedIageDescription = editTextAddImageDescription.getText().toString();
+                // convert image to byte type
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
+                selectedImage.compress(Bitmap.CompressFormat.PNG, public Bitmap makeSmall(selectedImage,50),  );
 
                 Toast.makeText(AddImagesActivity.this, "picture added", Toast.LENGTH_SHORT).show();
                 backToMainActivity();
@@ -144,7 +158,14 @@ public class AddImagesActivity extends AppCompatActivity
             }
     );
 
+    public Bitmap makeSmall(Bitmap image, int maxSize)
+    {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        float ratio = (float) width / (float) height;
+    }
 
+}
 
 
 //    @Override
@@ -171,4 +192,3 @@ public class AddImagesActivity extends AppCompatActivity
 //        }
 //        super.onActivityResult(requestCode, resultCode, data);
 //    }
-}
