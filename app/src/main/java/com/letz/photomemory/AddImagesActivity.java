@@ -48,12 +48,11 @@ public class AddImagesActivity extends AppCompatActivity
     private Bitmap selectedImage;
 
     @Override
-    String addedImageTitle = editTextAddImageTitle.getText().toString() ;
+    String addedImageTitle = editTextAddImageTitle.getText().toString();
     String addedIageDescription = editTextAddImageDescription.getText().toString();
     // convert image to byte type
 
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Add Image");
         setContentView(R.layout.activity_add_images);
@@ -63,52 +62,48 @@ public class AddImagesActivity extends AppCompatActivity
         editTextAddImageDescription = findViewById(R.id.editTextAddIamgeTitle);
         btnSave = findViewById(R.id.btnSave);
 
-//        Glide.with(this).load("http://goo.go/gEgYUd").into(imageViewAddImage);
-
-
-        String addedImageTitle = editTextAddImageTitle.getText().toString() ;
+        String addedImageTitle = editTextAddImageTitle.getText().toString();
         String addedIageDescription = editTextAddImageDescription.getText().toString();
-        // convert image to byte type
 
-        imageViewAddImage.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // 사용자가 퍼미션 아직 안 줬으면
-                if (ContextCompat.checkSelfPermission(AddImagesActivity.this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AddImagesActivity.this
-                            , new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}
-                            , 1);
+        // convert image to byte type
+        imageViewAddImage.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v) {
+                        // 사용자가 퍼미션 아직 안 줬으면
+                        if (ContextCompat.checkSelfPermission(AddImagesActivity.this,
+                                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(AddImagesActivity.this
+                                    , new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}
+                                    , 1);
+                        }
+                        // 퍼미션 이미 줬으면
+                        else {
+                            Intent AddImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            AddImageLauncher.launch(AddImageIntent);
+                        }
+                    }
                 }
-                // 퍼미션 이미 줬으면
-                else {
-                    Intent AddImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                    startActivityForResult(AddImage,2);
-                    AddImageLauncher.launch(AddImageIntent);
-                }
-            }
-        });
+
+        );
 
         btnSave.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
-            {
-                String addedImageTitle = editTextAddImageTitle.getText().toString() ;
+            public void onClick(View v) {
+                String addedImageTitle = editTextAddImageTitle.getText().toString();
                 String addedIageDescription = editTextAddImageDescription.getText().toString();
                 // convert image to byte type
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
-                selectedImage.compress(Bitmap.CompressFormat.PNG, public Bitmap makeSmall(selectedImage,50),  );
+                selectedImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
 
                 Toast.makeText(AddImagesActivity.this, "picture added", Toast.LENGTH_SHORT).show();
                 backToMainActivity();
             }
 
-            private void backToMainActivity()
-            {
+            private void backToMainActivity() {
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 finish();
@@ -118,8 +113,7 @@ public class AddImagesActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 //        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Intent AddImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -130,14 +124,14 @@ public class AddImagesActivity extends AppCompatActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    ActivityResultLauncher< Intent > AddImageLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> AddImageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
+            new ActivityResultCallback<ActivityResult>()
+            {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-
                         try {
                             if (Build.VERSION.SDK_INT >= 28) {
                                 ImageDecoder.Source source
@@ -146,49 +140,12 @@ public class AddImagesActivity extends AppCompatActivity
                             } else {
                                 selectedImage = MediaStore.Images.Media.getBitmap(AddImagesActivity.this.getContentResolver(), data.getData());
                             }
-
                             imageViewAddImage.setImageBitmap(selectedImage);
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-
                 }
             }
     );
-
-    public Bitmap makeSmall(Bitmap image, int maxSize)
-    {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        float ratio = (float) width / (float) height;
-    }
-
 }
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-//    {
-//        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
-//            try {
-//                if (Build.VERSION.SDK_INT >= 28) {
-//                    ImageDecoder.Source source
-//                            = ImageDecoder.createSource(this.getContentResolver(), data.getData());
-//                    selectedImage = ImageDecoder.decodeBitmap(source);
-//                } else {
-//                    selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
-//                }
-//
-//                imageViewAddImage.setImageBitmap(selectedImage);
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
