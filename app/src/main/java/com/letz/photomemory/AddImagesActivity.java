@@ -88,18 +88,23 @@ public class AddImagesActivity extends AppCompatActivity
         {
             @Override
             public void onClick(View v) {
-                String addedImageTitle = editTextAddImageTitle.getText().toString();
-                String addedIageDescription = editTextAddImageDescription.getText().toString();
-                // convert image to byte type
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-                scaledImage = makeImageSmall(selectedImage, 300);
+                if (selectedImage == null) {
+                    Toast.makeText(AddImagesActivity.this, "Select a pic!", Toast.LENGTH_SHORT).show();
+                } else {
+                    String addedImageTitle = editTextAddImageTitle.getText().toString();
+                    String addedIageDescription = editTextAddImageDescription.getText().toString();
+                    // convert image to byte type
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-                //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
-                selectedImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
+                    scaledImage = makeImageSmall(selectedImage, 300);
 
-                Toast.makeText(AddImagesActivity.this, "picture added", Toast.LENGTH_SHORT).show();
-                backToMainActivity();
+                    //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
+                    selectedImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
+
+                    Toast.makeText(AddImagesActivity.this, "picture added", Toast.LENGTH_SHORT).show();
+                    backToMainActivity();
+                }
             }
 
             private void backToMainActivity() {
