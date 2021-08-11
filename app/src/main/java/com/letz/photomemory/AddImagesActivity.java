@@ -21,6 +21,7 @@ import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -36,23 +37,17 @@ import java.io.IOException;
 
 public class AddImagesActivity extends AppCompatActivity
 {
-
-    private static final int GALLERY_REQUEST_CODE = 123;
-
-    private static int RESULT_LOAD_IMAGE = 7;
-
     private ImageView imageViewAddImage;
     private EditText editTextAddImageTitle, editTextAddImageDescription;
     private Button btnSave;
 
     private Bitmap selectedImage;
 
-    @Override
     String addedImageTitle = editTextAddImageTitle.getText().toString();
     String addedIageDescription = editTextAddImageDescription.getText().toString();
-    // convert image to byte type
 
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Add Image");
         setContentView(R.layout.activity_add_images);
