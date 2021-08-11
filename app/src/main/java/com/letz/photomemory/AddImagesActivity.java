@@ -42,6 +42,7 @@ public class AddImagesActivity extends AppCompatActivity
     private Button btnSave;
 
     private Bitmap selectedImage;
+    private Bitmap scaledImage;
 
     String addedImageTitle = editTextAddImageTitle.getText().toString();
     String addedIageDescription = editTextAddImageDescription.getText().toString();
@@ -91,6 +92,9 @@ public class AddImagesActivity extends AppCompatActivity
                 String addedIageDescription = editTextAddImageDescription.getText().toString();
                 // convert image to byte type
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+                scaledImage = makeImageSmall(selectedImage, 300);
+
                 //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
                 selectedImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
 
@@ -105,6 +109,23 @@ public class AddImagesActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private Bitmap makeImageSmall(Bitmap selectedImage, int maxSize) {
+
+        int width = selectedImage.getWidth();
+        int height = selectedImage.getHeight();
+        float ratio = (float) width / (float) height;
+
+        if (ratio > 1) {
+            width = maxSize;
+            height = (int) (width / ratio);
+        } else {
+            width = (int) (height * ratio);
+            height = maxSize;
+        }
+
+        return Bitmap.createScaledBitmap(selectedImage, width, height, true);
     }
 
     @Override
