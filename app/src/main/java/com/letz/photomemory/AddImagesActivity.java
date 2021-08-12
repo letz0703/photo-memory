@@ -68,6 +68,7 @@ public class AddImagesActivity extends AppCompatActivity
         {
             @Override
             public void onClick(View v) {
+
                 if (selectedImage == null) {
                     Toast.makeText(AddImagesActivity.this, "Select a pic!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -81,8 +82,17 @@ public class AddImagesActivity extends AppCompatActivity
                     //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
                     scaledImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
                     byte[] image = outputStream.toByteArray();
+
+                    Intent intent = new Intent();
+
+                    intent.putExtra("title", addedImageTitle);
+                    intent.putExtra("description", addedIageDescription);
+                    intent.putExtra("image", image);
+                    setResult(Activity.RESULT_OK, intent);
+
                     Toast.makeText(AddImagesActivity.this, "picture added", Toast.LENGTH_SHORT).show();
-                    backToMainActivity();
+
+                    finish();
                 }
             }
 
@@ -103,11 +113,7 @@ public class AddImagesActivity extends AppCompatActivity
                 return Bitmap.createScaledBitmap(selectedImage, width, height, true);
             }
 
-            private void backToMainActivity() {
-                Intent intent = new Intent();
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-            }
+
         });
     }
 

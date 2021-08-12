@@ -1,5 +1,6 @@
 package com.letz.photomemory;
 
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyImagesAdapter extends RecyclerView.Adapter<MyImagesAdapter.myImagesHolder>{
+public class MyImagesAdapter extends RecyclerView.Adapter<MyImagesAdapter.myImagesHolder>
+{
     private List<MyImages> imagesList = new ArrayList<>();
 
     public void setImagesList(List<MyImages> imagesList) {
@@ -28,13 +30,18 @@ public class MyImagesAdapter extends RecyclerView.Adapter<MyImagesAdapter.myImag
     @Override
     public myImagesHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.image_card,parent,false);
+                .inflate(R.layout.image_card, parent, false);
         return new myImagesHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull myImagesHolder holder, int position) {
-
+        MyImages myImages = imagesList.get(position);
+        holder.textViewTitle.setText(myImages.getImage_name());
+        holder.textViewDescription.setText(myImages.getImage_descriptoin());
+        holder.imageView.setImageBitmap(BitmapFactory
+                .decodeByteArray(myImages.getImage()
+                        , 0, myImages.getImage().length));
     }
 
     @Override

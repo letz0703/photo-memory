@@ -15,7 +15,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -53,19 +52,20 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-        fab.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                move2AddImage();
-            }
-
-            private void move2AddImage() {
-                Intent intent = new Intent(MainActivity.this, AddImagesActivity.class);
-//                startActivityForResult(intent, 3);
-                startARLauncher.launch(intent);
-            }
+        fab.setOnClickListener((v) -> {
+            Intent intent = new Intent(MainActivity.this, AddImagesActivity.class);
+            startARLauncher.launch(intent);
         });
+
+//        fab.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, AddImagesActivity.class);
+//                startARLauncher.launch(intent);
+//            }
+//
+//        });
     }
 
     ActivityResultLauncher<Intent> startARLauncher = registerForActivityResult(
@@ -77,15 +77,30 @@ public class MainActivity extends AppCompatActivity
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
 
-                    //                        String description = data.getStringExtra("note");
-                    //                        Note note = new Note(description);
-//                        MyImages image = new MyImages(data.getByteExtra("selected"));
-//                        Note note = new Note(data.getStringExtra("note"));
-//                        Add this data to the DB
-//                        noteViewModel.insert(note);
-                }
+                        String title = data.getStringExtra("title");
+                        String description = data.getStringExtra("description");
+                        byte[] image = data.getByteArrayExtra("image");
+
+                        MyImages myImages = new MyImages(title, description, image);
+                        myImagesViewModel.insert(myImages); // save to roomDB
+                    }
 
                 }
             }
     );
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 3 && requestCode == RESULT_OK && data != null) {
+
+            String title = data.getStringExtra("title");
+            String description = data.getStringExtra("description");
+            byte[] image = data.getByteArrayExtra("image");
+
+            MyImages myImages = new MyImages(title, description, image);
+            myImagesViewModel.insert(myImages); // save to roomDB
+        }
+    }
 }
