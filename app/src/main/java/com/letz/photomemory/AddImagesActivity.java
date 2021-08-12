@@ -44,8 +44,6 @@ public class AddImagesActivity extends AppCompatActivity
     private Bitmap selectedImage;
     private Bitmap scaledImage;
 
-    String addedImageTitle = editTextAddImageTitle.getText().toString();
-    String addedIageDescription = editTextAddImageDescription.getText().toString();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -60,8 +58,8 @@ public class AddImagesActivity extends AppCompatActivity
 
         String addedImageTitle = editTextAddImageTitle.getText().toString();
         String addedIageDescription = editTextAddImageDescription.getText().toString();
-
-        // convert image to byte type
+//
+//        // convert image to byte type
         imageViewAddImage.setOnClickListener(
                 new View.OnClickListener()
                 {
@@ -101,6 +99,8 @@ public class AddImagesActivity extends AppCompatActivity
 
                     //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
                     selectedImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
+
+
 
                     Toast.makeText(AddImagesActivity.this, "picture added", Toast.LENGTH_SHORT).show();
                     backToMainActivity();
