@@ -89,18 +89,18 @@ public class MainActivity extends AppCompatActivity
             }
     );
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 3 && requestCode == RESULT_OK && data != null) {
-
-            String title = data.getStringExtra("title");
-            String description = data.getStringExtra("description");
-            byte[] image = data.getByteArrayExtra("image");
-
-            MyImages myImages = new MyImages(title, description, image);
-            myImagesViewModel.insert(myImages); // save to roomDB
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 3 && requestCode == RESULT_OK && data != null) {
+//
+//            String title = data.getStringExtra("title");
+//            String description = data.getStringExtra("description");
+//            byte[] image = data.getByteArrayExtra("image");
+//
+//            MyImages myImages = new MyImages(title, description, image);
+//            myImagesViewModel.insert(myImages); // save to roomDB
+//        }
+//    }
 }
