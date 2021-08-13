@@ -44,6 +44,11 @@ public class MyImagesAdapter extends RecyclerView.Adapter<MyImagesAdapter.myImag
                         , 0, myImages.getImage().length));
     }
 
+    public MyImages getIamgeAtPosition(int postion)
+    {
+        return imagesList.get(postion);
+    }
+
     @Override
     public int getItemCount() {
         return imagesList.size();
