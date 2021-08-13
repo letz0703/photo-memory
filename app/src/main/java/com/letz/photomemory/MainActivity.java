@@ -73,6 +73,19 @@ public class MainActivity extends AppCompatActivity
             }
         }).attachToRecyclerView(rv);
 
+        adapter.setListener(new MyImagesAdapter.onImageClickListener()
+        {
+            @Override
+            public void onImageClick(MyImages myImages) {
+                Intent intent = new Intent(MainActivity.this, UpdateImagesActivity.class);
+                intent.putExtra("id", myImages.getImage_id());
+                intent.putExtra("title", myImages.getImage_name());
+                intent.putExtra("description", myImages.getImage_descriptoin());
+                intent.putExtra("image", myImages.getImage());
+                launchUpdate.launch(intent);
+            }
+        });
+
 //        fab.setOnClickListener(new View.OnClickListener()
 //        {
 //            @Override
@@ -83,6 +96,18 @@ public class MainActivity extends AppCompatActivity
 //
 //        });
     }
+
+    ActivityResultLauncher<Intent> launchUpdate = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>()
+            {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+                    }
+                }
+            }
+    );
 
     ActivityResultLauncher<Intent> startARLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

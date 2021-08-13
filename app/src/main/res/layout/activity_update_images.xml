@@ -8,7 +8,7 @@
 
     <ImageView
             android:layout_width="100dp"
-            android:layout_height=" 100dp"
+            android:layout_height="100dp"
             app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24"
             android:id="@+id/imageViewUpdateImage"
             android:background="#00BCD4"
