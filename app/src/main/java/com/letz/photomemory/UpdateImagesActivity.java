@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,9 +29,13 @@ import java.io.IOException;
 
 public class UpdateImagesActivity extends AppCompatActivity
 {
-    private ImageView imageViewUpateImage;
-    private EditText editTextUpateImageTitle, editTextUpateImageDescription;
-    private Button btnSaveUpateImage;
+    private ImageView imageViewUpdateImage;
+    private EditText editTextUpdateImageTitle, editTextUpdateImageDescription;
+    private Button btnUpdate;
+
+    private String title, description;
+    private byte [] image;
+    private int id;
 
     private Bitmap selectedImage;
     private Bitmap scaledImage;
@@ -38,16 +43,32 @@ public class UpdateImagesActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_images);
-        imageViewUpateImage = findViewById(R.id.imageViewUpdateImage);
-        editTextUpateImageTitle = findViewById(R.id.editTextUpdateIamgeTitle);
-        editTextUpateImageDescription = findViewById(R.id.editTextUpdateImageDescription);
-        btnSaveUpateImage = findViewById(R.id.btnSaveUpdateImage);
+        setContentView(R.layout.activity_update_images);
+        imageViewUpdateImage = findViewById(R.id.imageViewUpdateImage);
+        editTextUpdateImageTitle = findViewById(R.id.editTextUpdateIamgeTitle);
+        editTextUpdateImageDescription = findViewById(R.id.editTextUpdateImageDescription);
+        btnUpdate = findViewById(R.id.btnUpdate);
 
-//        String addedImageTitle = editTextUpateImageTitle.getText().toString();
-//        String addedImageDescription = editTextUpateImageDescription.getText().toString();
+        id = getIntent().getIntExtra("id", -1);
+        title = getIntent().getStringExtra("title");
+        description = getIntent().getStringExtra("description");
+        image = getIntent().getByteArrayExtra("image");
 
-        imageViewUpateImage.setOnClickListener(new View.OnClickListener()
+        editTextUpdateImageTitle.setText(title);
+        editTextUpdateImageDescription.setText(description);
+        imageViewUpdateImage.setImageBitmap(BitmapFactory.decodeByteArray(image, 0, image.length));
+//        imageViewUpdateImage.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+
+//        String addedImageTitle = editTextUpdateImageTitle.getText().toString();
+//        String addedImageDescription = editTextUpdateImageDescription.getText().toString();
+
+        imageViewUpdateImage.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
@@ -58,13 +79,13 @@ public class UpdateImagesActivity extends AppCompatActivity
                 }
                 // 퍼미션 이미 줬으면
                 else {
-                    Intent UpateImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    UpateImageLauncher.launch(UpateImageIntent);
+                    Intent UpdateImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    UpdateImageLauncher.launch(UpdateImageIntent);
                 }
             }
         });
 
-        btnSaveUpateImage.setOnClickListener(new View.OnClickListener()
+        btnUpdate.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
@@ -72,8 +93,8 @@ public class UpdateImagesActivity extends AppCompatActivity
                 if (selectedImage == null) {
                     Toast.makeText(UpdateImagesActivity.this, "Select a pic!", Toast.LENGTH_SHORT).show();
                 } else {
-                    String addedImageTitle = editTextUpateImageTitle.getText().toString();
-                    String addedIageDescription = editTextUpateImageDescription.getText().toString();
+                    String addedImageTitle = editTextUpdateImageTitle.getText().toString();
+                    String addedIageDescription = editTextUpdateImageDescription.getText().toString();
                     // convert image to byte type
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -118,7 +139,7 @@ public class UpdateImagesActivity extends AppCompatActivity
     }
 
     //}
-    ActivityResultLauncher<Intent> UpateImageLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> UpdateImageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>()
             {
@@ -134,7 +155,7 @@ public class UpdateImagesActivity extends AppCompatActivity
                             } else {
                                 selectedImage = MediaStore.Images.Media.getBitmap(UpdateImagesActivity.this.getContentResolver(), data.getData());
                             }
-                            imageViewUpateImage.setImageBitmap(selectedImage);
+                            imageViewUpdateImage.setImageBitmap(selectedImage);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

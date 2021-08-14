@@ -78,10 +78,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onImageClick(MyImages myImages) {
                 Intent intent = new Intent(MainActivity.this, UpdateImagesActivity.class);
+
                 intent.putExtra("id", myImages.getImage_id());
                 intent.putExtra("title", myImages.getImage_name());
                 intent.putExtra("description", myImages.getImage_descriptoin());
                 intent.putExtra("image", myImages.getImage());
+
                 launchUpdate.launch(intent);
             }
         });
@@ -97,17 +99,7 @@ public class MainActivity extends AppCompatActivity
 //        });
     }
 
-    ActivityResultLauncher<Intent> launchUpdate = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>()
-            {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == RESULT_OK) {
-                    }
-                }
-            }
-    );
+
 
     ActivityResultLauncher<Intent> startARLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -126,6 +118,18 @@ public class MainActivity extends AppCompatActivity
                         myImagesViewModel.insert(myImages); // save to roomDB
                     }
 
+                }
+            }
+    );
+
+    ActivityResultLauncher<Intent> launchUpdate = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>()
+            {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+                    }
                 }
             }
     );

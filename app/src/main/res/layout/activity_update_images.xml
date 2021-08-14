@@ -7,8 +7,8 @@
         tools:context=".UpdateImagesActivity">
 
     <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
             app:srcCompat="@android:drawable/ic_menu_camera"
             android:id="@+id/imageViewUpdateImage"
             android:background="@color/white"
@@ -16,17 +16,19 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="44dp"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:layout_marginTop="10dp" />
 
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageViewUpdateImage"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
                 android:layout_width="350dp"
@@ -41,7 +43,7 @@
 
         <EditText
                 android:layout_width="350dp"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:inputType="textMultiLine"
                 android:gravity="start|top"
                 android:ems="10"
@@ -51,10 +53,10 @@
                 android:textColor="@color/black" />
 
         <Button
-                android:text="save"
+                android:text="update"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnSaveUpdateImage"
+                android:id="@+id/btnUpdate"
                 android:layout_margin="10dp"
                 android:textSize="19sp" />
     </LinearLayout>
