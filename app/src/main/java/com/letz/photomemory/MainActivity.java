@@ -77,14 +77,14 @@ public class MainActivity extends AppCompatActivity
         {
             @Override
             public void onImageClick(MyImages myImages) {
-                Intent intent = new Intent(MainActivity.this, UpdateImagesActivity.class);
+                Intent updateIntent = new Intent(MainActivity.this, UpdateImagesActivity.class);
 
-                intent.putExtra("id", myImages.getImage_id());
-                intent.putExtra("title", myImages.getImage_name());
-                intent.putExtra("description", myImages.getImage_descriptoin());
-                intent.putExtra("image", myImages.getImage());
+                updateIntent.putExtra("id", myImages.getImage_id());
+                updateIntent.putExtra("title", myImages.getImage_name());
+                updateIntent.putExtra("description", myImages.getImage_descriptoin());
+                updateIntent.putExtra("image", myImages.getImage());
 
-                launchUpdate.launch(intent);
+                launchUpdate.launch(updateIntent);
             }
         });
 
@@ -122,13 +122,22 @@ public class MainActivity extends AppCompatActivity
             }
     );
 
-    ActivityResultLauncher<Intent> launchUpdate = registerForActivityResult(
+    ActivityResultLauncher < Intent > launchUpdate = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>()
-            {
+            new ActivityResultCallback < ActivityResult > () {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+
+                        String uTitle = data.getStringExtra("updateTitle");
+                        String uDescription = data.getStringExtra("updateDescription");
+                        byte[] uImages  = data.getByteArrayExtra("updateImage");
+                        int uId = data.getIntExtra("updateId", -1);
+
+                        MyImages myImages = new MyImages(uTitle, uDescription, uImages);
+                        myImages.setImage_id(uId);
+                        myImagesViewModel.update(myImages);
                     }
                 }
             }

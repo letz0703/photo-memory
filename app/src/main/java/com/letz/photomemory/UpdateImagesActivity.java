@@ -34,7 +34,7 @@ public class UpdateImagesActivity extends AppCompatActivity
     private Button btnUpdate;
 
     private String title, description;
-    private byte [] image;
+    private byte[] image;
     private int id;
 
     private Bitmap selectedImage;
@@ -47,7 +47,7 @@ public class UpdateImagesActivity extends AppCompatActivity
         imageViewUpdateImage = findViewById(R.id.imageViewUpdateImage);
         editTextUpdateImageTitle = findViewById(R.id.editTextUpdateIamgeTitle);
         editTextUpdateImageDescription = findViewById(R.id.editTextUpdateImageDescription);
-        btnUpdate = findViewById(R.id.btnUpdate);
+        btnUpdate = findViewById(R.id.btnUpdateImage);
 
         id = getIntent().getIntExtra("id", -1);
         title = getIntent().getStringExtra("title");
@@ -89,30 +89,37 @@ public class UpdateImagesActivity extends AppCompatActivity
         {
             @Override
             public void onClick(View v) {
-
-                if (selectedImage == null) {
-                    Toast.makeText(UpdateImagesActivity.this, "Select a pic!", Toast.LENGTH_SHORT).show();
+                if (id == -1) {
+                    Toast.makeText(UpdateImagesActivity.this, "There is a problem", Toast.LENGTH_SHORT).show();
                 } else {
-                    String addedImageTitle = editTextUpdateImageTitle.getText().toString();
-                    String addedIageDescription = editTextUpdateImageDescription.getText().toString();
-                    // convert image to byte type
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-                    scaledImage = makeImageSmall(selectedImage, 300);
+                    String updateTitle = editTextUpdateImageTitle.getText().toString();
+                    String updateDescription = editTextUpdateImageDescription.getText().toString();
+                    Intent updateToMainIntent = new Intent();
 
-                    //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
-                    scaledImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
-                    byte[] image = outputStream.toByteArray();
+                    updateToMainIntent.putExtra("updateId", id);
+                    updateToMainIntent.putExtra("updateTitle", updateTitle);
+                    updateToMainIntent.putExtra("updateDescription", updateDescription);
 
-                    Intent intent = new Intent();
+                    if (selectedImage == null) {
+                        updateToMainIntent.putExtra("updateImage", image);
 
-                    intent.putExtra("title", addedImageTitle);
-                    intent.putExtra("description", addedIageDescription);
-                    intent.putExtra("image", image);
-                    setResult(Activity.RESULT_OK, intent);
+                    } else {
 
-                    Toast.makeText(UpdateImagesActivity.this, "picture added", Toast.LENGTH_SHORT).show();
+                        // convert image to byte type
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
+                        scaledImage = makeImageSmall(selectedImage, 300);
+
+                        //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
+                        scaledImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
+                        byte[] image = outputStream.toByteArray();
+
+                        updateToMainIntent.putExtra("updateImage", image);
+                    }
+
+                    setResult(Activity.RESULT_OK, updateToMainIntent);
+                    Toast.makeText(UpdateImagesActivity.this, "picture updated", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
@@ -133,12 +140,9 @@ public class UpdateImagesActivity extends AppCompatActivity
 
                 return Bitmap.createScaledBitmap(selectedImage, width, height, true);
             }
-
-
         });
     }
 
-    //}
     ActivityResultLauncher<Intent> UpdateImageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>()
@@ -163,4 +167,5 @@ public class UpdateImagesActivity extends AppCompatActivity
                 }
             }
     );
+
 }

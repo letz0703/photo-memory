@@ -96,10 +96,10 @@ public class AddImagesActivity extends AppCompatActivity
                 }
             }
 
-            private Bitmap makeImageSmall(Bitmap selectedImage, int maxSize) {
+            private Bitmap makeImageSmall(Bitmap image, int maxSize) {
 
-                int width = selectedImage.getWidth();
-                int height = selectedImage.getHeight();
+                int width = image.getWidth();
+                int height = image.getHeight();
                 float ratio = (float) width / (float) height;
 
                 if (ratio > 1) {
@@ -110,7 +110,7 @@ public class AddImagesActivity extends AppCompatActivity
                     height = maxSize;
                 }
 
-                return Bitmap.createScaledBitmap(selectedImage, width, height, true);
+                return Bitmap.createScaledBitmap(image, width, height, true);
             }
 
 
