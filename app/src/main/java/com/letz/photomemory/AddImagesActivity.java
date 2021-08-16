@@ -73,11 +73,11 @@ public class AddImagesActivity extends AppCompatActivity
                     Toast.makeText(AddImagesActivity.this, "Select a pic!", Toast.LENGTH_SHORT).show();
                 } else {
                     String addedImageTitle = editTextAddImageTitle.getText().toString();
-                    String addedIageDescription = editTextAddImageDescription.getText().toString();
+                    String addedImageDescription = editTextAddImageDescription.getText().toString();
                     // convert image to byte type
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-                    scaledImage = makeImageSmall(selectedImage, 300);
+                    scaledImage = makeImageSmall(selectedImage, 350);
 
                     //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
                     scaledImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
@@ -86,7 +86,7 @@ public class AddImagesActivity extends AppCompatActivity
                     Intent intent = new Intent();
 
                     intent.putExtra("title", addedImageTitle);
-                    intent.putExtra("description", addedIageDescription);
+                    intent.putExtra("description", addedImageDescription);
                     intent.putExtra("image", image);
                     setResult(Activity.RESULT_OK, intent);
 
@@ -112,8 +112,6 @@ public class AddImagesActivity extends AppCompatActivity
 
                 return Bitmap.createScaledBitmap(image, width, height, true);
             }
-
-
         });
     }
 

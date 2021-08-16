@@ -7,9 +7,9 @@
         tools:context=".AddImagesActivity">
 
     <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:srcCompat="@android:drawable/ic_menu_camera"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            app:srcCompat="@drawable/camera_icon"
             android:id="@+id/imageViewAddImage"
             android:background="@color/white"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
 
         <EditText
                 android:layout_width="350dp"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:inputType="textMultiLine"
                 android:gravity="start|top"
                 android:ems="10"
