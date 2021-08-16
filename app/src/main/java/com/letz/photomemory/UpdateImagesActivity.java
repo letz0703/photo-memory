@@ -37,7 +37,7 @@ public class UpdateImagesActivity extends AppCompatActivity
     private byte[] image;
     private int id;
 
-    private Bitmap selectedImage;
+    private Bitmap updatedImage;
     private Bitmap scaledImage;
 
     @Override
@@ -101,7 +101,7 @@ public class UpdateImagesActivity extends AppCompatActivity
                     updateToMainIntent.putExtra("updateTitle", updateTitle);
                     updateToMainIntent.putExtra("updateDescription", updateDescription);
 
-                    if (selectedImage == null) {
+                    if (updatedImage == null) {
                         updateToMainIntent.putExtra("updateImage", image);
 
                     } else {
@@ -109,7 +109,7 @@ public class UpdateImagesActivity extends AppCompatActivity
                         // convert image to byte type
                         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-                        scaledImage = makeImageSmall(selectedImage, 300);
+                        scaledImage = makeImageSmall(updatedImage, 300);
 
                         //compress image -> 포맷, 이미지 퀄러티,OutputStream Object
                         scaledImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
@@ -124,10 +124,10 @@ public class UpdateImagesActivity extends AppCompatActivity
                 }
             }
 
-            private Bitmap makeImageSmall(Bitmap selectedImage, int maxSize) {
+            private Bitmap makeImageSmall(Bitmap updatedImage, int maxSize) {
 
-                int width = selectedImage.getWidth();
-                int height = selectedImage.getHeight();
+                int width = updatedImage.getWidth();
+                int height = updatedImage.getHeight();
                 float ratio = (float) width / (float) height;
 
                 if (ratio > 1) {
@@ -138,7 +138,7 @@ public class UpdateImagesActivity extends AppCompatActivity
                     height = maxSize;
                 }
 
-                return Bitmap.createScaledBitmap(selectedImage, width, height, true);
+                return Bitmap.createScaledBitmap(updatedImage, width, height, true);
             }
         });
     }
@@ -155,11 +155,11 @@ public class UpdateImagesActivity extends AppCompatActivity
                             if (Build.VERSION.SDK_INT >= 28) {
                                 ImageDecoder.Source source
                                         = ImageDecoder.createSource(UpdateImagesActivity.this.getContentResolver(), data.getData());
-                                selectedImage = ImageDecoder.decodeBitmap(source);
+                                updatedImage = ImageDecoder.decodeBitmap(source);
                             } else {
-                                selectedImage = MediaStore.Images.Media.getBitmap(UpdateImagesActivity.this.getContentResolver(), data.getData());
+                                updatedImage = MediaStore.Images.Media.getBitmap(UpdateImagesActivity.this.getContentResolver(), data.getData());
                             }
-                            imageViewUpdateImage.setImageBitmap(selectedImage);
+                            imageViewUpdateImage.setImageBitmap(updatedImage);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

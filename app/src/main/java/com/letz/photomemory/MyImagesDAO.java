@@ -20,6 +20,6 @@ public interface MyImagesDAO {
 
     @Delete
     void Delete(MyImages myImages);
-    @Query("SELECT * FROM my_images ORDER BY image_id ASC")
+    @Query("SELECT * FROM my_images ORDER BY image_id DESC")
     LiveData<List<MyImages>> getAllImages();
 }
